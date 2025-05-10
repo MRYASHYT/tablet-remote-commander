@@ -1,11 +1,14 @@
 
 import React from 'react';
+import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PCKeyboardProps {
   onKey: (key: string) => void;
 }
 
 const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
+  const isMobile = useIsMobile();
+
   // Full keyboard layout
   const functionKeys = ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'];
   const numberRow = ['`', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '=', 'Backspace'];
@@ -18,7 +21,11 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
 
   // Function to render a single key
   const renderKey = (key: string, isSpecial = false) => {
-    let keyClass = "bg-white p-1 rounded shadow-sm text-center text-xs";
+    // Responsive sizing based on device
+    const keySize = isMobile ? "p-0.5 text-xs" : "p-1 text-sm";
+    const keyHeight = isMobile ? "h-8" : "h-10";
+    
+    let keyClass = `bg-white rounded shadow-sm text-center ${keySize}`;
     
     // Handle special keys with larger size
     switch (key) {
@@ -31,7 +38,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
         keyClass += " bg-gray-100 font-medium px-2";
         break;
       case 'Space':
-        keyClass += " px-16"; // Extra wide space bar
+        keyClass += isMobile ? " px-10" : " px-16"; // Responsive space bar
         break;
       default:
         if (isSpecial) {
@@ -59,7 +66,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
     return (
       <button
         key={key}
-        className={`${keyClass} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100 h-10`}
+        className={`${keyClass} ${keyHeight} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100`}
         onClick={() => onKey(key)}
       >
         {displayText[key as keyof typeof displayText] || key}
