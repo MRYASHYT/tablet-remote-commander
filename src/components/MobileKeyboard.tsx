@@ -36,7 +36,7 @@ const MobileKeyboard: React.FC<MobileKeyboardProps> = ({ onKey }) => {
     return (
       <button
         key={key}
-        className={`${keyClass} m-1 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100 min-w-[2rem] h-10`}
+        className={`${keyClass} m-1 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100 min-w-[2rem] h-12`}
         onClick={() => onKey(key)}
       >
         {key === 'Backspace' ? '⌫' : key === 'Return' ? '⏎' : key === 'Space' ? '' : key}
@@ -46,7 +46,7 @@ const MobileKeyboard: React.FC<MobileKeyboardProps> = ({ onKey }) => {
 
   // Render each row of the keyboard
   return (
-    <div className="w-full bg-gray-200 p-3 rounded-t-xl shadow-inner">
+    <div className="w-full bg-gray-200 p-3 rounded-t-xl shadow-inner flex-grow flex flex-col justify-end">
       {rows.map((row, rowIndex) => (
         <div key={rowIndex} className="flex justify-center mb-2">
           {row.map(renderKey)}

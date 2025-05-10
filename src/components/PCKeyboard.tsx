@@ -59,7 +59,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
     return (
       <button
         key={key}
-        className={`${keyClass} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100 h-8`}
+        className={`${keyClass} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100 h-10`}
         onClick={() => onKey(key)}
       >
         {displayText[key as keyof typeof displayText] || key}
@@ -69,7 +69,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
 
   // Render the full keyboard layout
   return (
-    <div className="w-full bg-gray-200 p-2 rounded-t-xl shadow-inner overflow-auto">
+    <div className="w-full bg-gray-200 p-2 rounded-t-xl shadow-inner overflow-auto flex-grow flex flex-col justify-end">
       <div className="flex justify-between mb-2">
         {functionKeys.map(key => renderKey(key, true))}
       </div>

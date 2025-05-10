@@ -53,7 +53,7 @@ const Index = () => {
             sendScroll,
             sendBackspace
           }) => (
-            <Tabs defaultValue="mouse" className="p-4">
+            <Tabs defaultValue="mouse" className="p-4 h-full">
               <TabsList className="grid w-full grid-cols-2">
                 <TabsTrigger value="mouse">Mouse</TabsTrigger>
                 <TabsTrigger value="keyboard">Keyboard</TabsTrigger>
@@ -80,17 +80,19 @@ const Index = () => {
                 />
               </TabsContent>
               
-              <TabsContent value="keyboard" className="mt-4">
+              <TabsContent value="keyboard" className="mt-4 flex flex-col h-[calc(100vh-240px)]">
                 <KeyboardToggle 
                   isFullKeyboard={isFullKeyboard}
                   onToggle={() => setIsFullKeyboard(!isFullKeyboard)}
                 />
                 
-                {isFullKeyboard ? (
-                  <PCKeyboard onKey={sendKey} />
-                ) : (
-                  <MobileKeyboard onKey={sendKey} />
-                )}
+                <div className="flex-grow flex flex-col">
+                  {isFullKeyboard ? (
+                    <PCKeyboard onKey={sendKey} />
+                  ) : (
+                    <MobileKeyboard onKey={sendKey} />
+                  )}
+                </div>
               </TabsContent>
             </Tabs>
           )}
