@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface MobileKeyboardProps {
@@ -8,6 +8,24 @@ interface MobileKeyboardProps {
 
 const MobileKeyboard: React.FC<MobileKeyboardProps> = ({ onKey }) => {
   const isMobile = useIsMobile();
+  const [keySize, setKeySize] = useState({ padding: "", minWidth: "", height: "" });
+  
+  // Update key sizes based on screen width
+  useEffect(() => {
+    if (isMobile) {
+      setKeySize({
+        padding: "p-1",
+        minWidth: "min-w-[1.5rem]",
+        height: "h-9"
+      });
+    } else {
+      setKeySize({
+        padding: "p-2",
+        minWidth: "min-w-[2.5rem]",
+        height: "h-12"
+      });
+    }
+  }, [isMobile]);
   
   // Basic keyboard layout rows
   const rows = [
@@ -20,10 +38,6 @@ const MobileKeyboard: React.FC<MobileKeyboardProps> = ({ onKey }) => {
   // Function to render a single key
   const renderKey = (key: string) => {
     let keyClass = "bg-white rounded shadow-sm text-center";
-    
-    // Responsive sizing based on device
-    const keySize = isMobile ? "p-1 min-w-[1.8rem]" : "p-2 min-w-[2.5rem]";
-    const keyHeight = isMobile ? "h-10" : "h-14";
     
     // Handle special keys
     switch (key) {
@@ -43,7 +57,7 @@ const MobileKeyboard: React.FC<MobileKeyboardProps> = ({ onKey }) => {
     return (
       <button
         key={key}
-        className={`${keyClass} ${keySize} ${keyHeight} m-1 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100`}
+        className={`${keyClass} ${keySize.padding} ${keySize.minWidth} ${keySize.height} m-1 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100`}
         onClick={() => onKey(key)}
       >
         {key === 'Backspace' ? '⌫' : key === 'Return' ? '⏎' : key === 'Space' ? '' : key}

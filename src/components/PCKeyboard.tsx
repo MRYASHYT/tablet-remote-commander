@@ -1,5 +1,5 @@
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import { useIsMobile } from '@/hooks/use-mobile';
 
 interface PCKeyboardProps {
@@ -8,6 +8,31 @@ interface PCKeyboardProps {
 
 const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
   const isMobile = useIsMobile();
+  const [keySize, setKeySize] = useState({
+    padding: "",
+    height: "",
+    fontSize: "",
+    spaceBarWidth: ""
+  });
+
+  // Update key sizes based on screen width
+  useEffect(() => {
+    if (isMobile) {
+      setKeySize({
+        padding: "p-0.5",
+        height: "h-7",
+        fontSize: "text-xs",
+        spaceBarWidth: "px-8"
+      });
+    } else {
+      setKeySize({
+        padding: "p-1",
+        height: "h-10",
+        fontSize: "text-sm",
+        spaceBarWidth: "px-16"
+      });
+    }
+  }, [isMobile]);
 
   // Full keyboard layout
   const functionKeys = ['Esc', 'F1', 'F2', 'F3', 'F4', 'F5', 'F6', 'F7', 'F8', 'F9', 'F10', 'F11', 'F12'];
@@ -21,11 +46,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
 
   // Function to render a single key
   const renderKey = (key: string, isSpecial = false) => {
-    // Responsive sizing based on device
-    const keySize = isMobile ? "p-0.5 text-xs" : "p-1 text-sm";
-    const keyHeight = isMobile ? "h-8" : "h-10";
-    
-    let keyClass = `bg-white rounded shadow-sm text-center ${keySize}`;
+    let keyClass = `bg-white rounded shadow-sm text-center ${keySize.fontSize}`;
     
     // Handle special keys with larger size
     switch (key) {
@@ -38,7 +59,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
         keyClass += " bg-gray-100 font-medium px-2";
         break;
       case 'Space':
-        keyClass += isMobile ? " px-10" : " px-16"; // Responsive space bar
+        keyClass += ` ${keySize.spaceBarWidth}`;
         break;
       default:
         if (isSpecial) {
@@ -66,7 +87,7 @@ const PCKeyboard: React.FC<PCKeyboardProps> = ({ onKey }) => {
     return (
       <button
         key={key}
-        className={`${keyClass} ${keyHeight} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100`}
+        className={`${keyClass} ${keySize.padding} ${keySize.height} m-0.5 flex items-center justify-center transition-colors hover:bg-gray-50 active:bg-gray-100`}
         onClick={() => onKey(key)}
       >
         {displayText[key as keyof typeof displayText] || key}
